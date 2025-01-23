@@ -1,14 +1,20 @@
-import {Outlet} from 'react-router-dom'
+import {Outlet, useLocation} from 'react-router-dom'
 import  Header  from './Header.jsx'
 import  Footer  from './Footer.jsx'
 
+import styles from './stylemodules/Layout.module.css'
 
 function Layout() {
+
+    const location = useLocation()
+
+    const noFooterRoutes = ["/"]
+    const showFooter = !noFooterRoutes.includes(location.pathname);
     return (
-        <div>
+        <div className={`bg-dark text-white min-vh-100 d-flex flex-column`}>
             <Header/>
-                <Outlet/>
-            <Footer/>
+            <Outlet/>
+            {showFooter && <Footer/>}
         </div>
     )
 }
