@@ -3,7 +3,8 @@ import { adminPages } from './../../pages/'
 const adminRoute = [
     {
         path: '/admindashboard',
-        element: <adminPages.AdminDashboard/>
+        element: <adminPages.AdminDashboard/>,
+        children: []
     },
 ]
 

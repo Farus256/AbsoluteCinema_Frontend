@@ -1,0 +1,14 @@
+.card_container {
+    width: 240px;
+    color: black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.card_container img{
+    border-radius: 5px;
+    width: 240px;
+    heigth: 365px;
+    overflow: hidden;
+}

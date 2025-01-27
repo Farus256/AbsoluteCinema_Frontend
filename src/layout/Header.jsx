@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 function Header() {
 
     return (
-        <nav class={`navbar navbar-dark`}>
+        <nav class={`navbar navbar-dark ${styles.container}`}>
             <div class="container-fluid">
             <div>
                 <Link to="/" class="navbar-brand"> <b>AbsoluteCinema</b></Link>

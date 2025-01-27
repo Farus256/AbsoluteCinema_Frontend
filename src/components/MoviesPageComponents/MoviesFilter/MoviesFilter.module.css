@@ -1,0 +1,28 @@
+.filter_container {
+    color: black;
+    border: 1px solid black;
+    height: auto;
+    padding: 15px;
+    width: 360px;
+    border-radius: 4px;
+    max-height: 70%;
+}
+
+.filter_container hr{
+    border: 1px solid black;
+    margin: 10px 0;
+}
+
+.filter_title{
+    font-size: 36px;
+}
+
+.filter_genres_container{
+}
+
+.filter_genre{
+    display: flex;
+    gap: 12px;
+}
+
+
