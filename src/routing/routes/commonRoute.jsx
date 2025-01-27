@@ -3,27 +3,27 @@ import { commonPages } from '../../pages/'
 const commonRoute = [
     {
         path: '/example',
-        element: <commonPages.ExampleCommonPage/>
+        element: <commonPages.ExampleCommonPage />
     },
     {
         path: '/',
-        element: <commonPages.HomePage/>
+        element: <commonPages.HomePage />
     },
     {
         path: '/movies',
-        element: <commonPages.MoviesPage/>
+        element: <commonPages.MoviesPage />
     },
     {
         path: '/movie/:id',
-        element: <commonPages.MoviePage/>
+        element: <commonPages.MoviePage />
     },
     {
-        path: 'signup',
-        element: <commonPages.SignUpPage/>
+        path: '/signup',
+        element: <commonPages.SignUpPage />
     },
     {
-        path: 'signin',
-        element: <commonPages.SignInPage/>
+        path: '/signin',
+        element: <commonPages.SignInPage />
     },
 ]
 
