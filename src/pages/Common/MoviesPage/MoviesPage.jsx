@@ -5,7 +5,7 @@ import styles from './styles/MoviesPage.module.css'
 
 function MoviesPage() {
     return (
-        <div className={styles.wrapper}>
+        <div className="wrapper">
             <h1 className={styles.movies_header}> Movies </h1>
             <div className={styles.movies_wrapper}>
                 <div>
