@@ -19,6 +19,7 @@ function SignUpPage() {
                 <Input placehoder={"E-mail"} required={true} />
                 <Input placehoder={"Password"} required={true} />
                 <Input placehoder={"Password"} required={true} />
+                <Input placehoder={"Age"} required={true} type={"date"} />
                 <Button> Sign up </Button>
             </InputForm>
         </div>
