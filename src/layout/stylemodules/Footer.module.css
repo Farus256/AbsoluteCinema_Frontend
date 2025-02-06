@@ -1,0 +1,6 @@
+footer {
+    padding: 35px 10%;
+    background-color: #04020E;
+    display: flex;
+    gap: 40px;
+}

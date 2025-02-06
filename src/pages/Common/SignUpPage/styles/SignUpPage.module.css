@@ -1,0 +1,7 @@
+.wrapper{
+    color: #03010B;
+    flex: 1;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
