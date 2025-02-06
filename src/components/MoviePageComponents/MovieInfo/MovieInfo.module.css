@@ -1,0 +1,12 @@
+.img img{
+    width: 424px;
+    heigth: 640px;
+    overflow: hidden;
+}
+
+.description {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}

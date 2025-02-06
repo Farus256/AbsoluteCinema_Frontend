@@ -1,0 +1,7 @@
+.movieinfo{
+    display: grid;
+    color: black;
+    grid-template-columns: repeat(3, minmax(200px,1fr)); /* Creates three equal columns */
+    gap: 35px; /* Sets the gap between columns */
+    align-items: start;
+}
