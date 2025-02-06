@@ -1,0 +1,17 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    background-color: #F5F5F5;
+    justify-content: center;
+    align-items: center;
+    padding: 44px 100px;
+    width: 550px;
+    border-radius: 20px;
+    margin: auto;
+}
+
+.title{
+    color: #03010B;
+    font-size: 50px;
+}
