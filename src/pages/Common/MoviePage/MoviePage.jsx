@@ -3,23 +3,25 @@ import SessionSchedule from '../../../components/MoviePageComponents/SessionSche
 import MovieTrailer from '../../../components/MoviePageComponents/MovieTrailer/MovieTrailer'
 
 import styles from "./styles/MoviePage.module.css"
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 function MoviePage() {
     //on page load get movie id from the url and fetch data form api
+    const { id } = useParams()
+    const [movieInfo, setMovieInfo] = useState({})
+
+    useEffect(() => {
+        fetch(`https://localhost:7118/api/Movie/GetMovieById?id=${id}`)
+            .then(response => response.json())
+            .then(data => setMovieInfo(data))
+            .catch(err => console.log(err))
+    }, [])
     return (
         <div className={`wrapper`}>
             <div className={` ${styles.movieinfo}`} >
                 <MovieInfo
-                    img="https://i.redd.it/ta69batycg4b1.jpg"
-                    title="Captain America: Brave New World"
-                    adult="16"
-                    year="2025"
-                    genre="action, adventure"
-                    language="English"
-                    director="Julius Ona"
-                    cast="Anthony Mackie, Harrison Ford, Danny Ramirez, Shira Haas, Zoë Rócke-Lowitja, Carl Lumbly, as well as Giancarlo Esposito, Liv Tyler, Tim Blake Nelson, and others."
-                    description="Sam Wilson, the new Captain America, finds himself in the middle of an international incident and must discover the motive behind a nefarious global plan."
-                    score="4.75"
+                    info={movieInfo}
                 />
                 <SessionSchedule />
             </div>

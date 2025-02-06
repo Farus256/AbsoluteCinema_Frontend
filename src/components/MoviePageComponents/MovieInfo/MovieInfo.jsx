@@ -1,21 +1,25 @@
 import styles from "./MovieInfo.module.css"
 
-function MovieInfo({ img, title, adult, year, genre, language, director, cast, description, score }) {
+function MovieInfo({ info }) {
     return (
         <>
             <div className={`${styles.img}`}>
-                <img src={img} />
+                <img src={info.posterPath} />
             </div>
             <div className={`${styles.description}`} >
-                <h1> {title} </h1>
-                <span> {adult} </span>
-                <span>Year: {year} </span>
-                <span>Genre: {genre} </span>
-                <span>Language: {language} </span>
-                <span>Director: {director} </span>
-                <span>Starring: {cast} </span>
-                <span>Description: {description} </span>
-                <span>Score: {score} </span>
+                <h1> {info.title} </h1>
+                <span> {info.adult} </span>
+                <span>Year: {
+                    isNaN(new Date(info.releaseDate))
+                        ? 'Invalid date'
+                        : new Date(info.releaseDate).toISOString().split('T')[0]
+                } </span>
+                <span>Genre: {/*genre*/} </span>
+                <span>Language: {info.language} </span>
+                <span>Director: {info.director} </span>
+                <span>Starring: {/*cast*/} </span>
+                <span>Description: {info.discription} </span>
+                <span>Score: {info.score} </span>
             </div >
         </>
     )
