@@ -2,10 +2,6 @@ import { commonPages } from '../../pages/'
 
 const commonRoute = [
     {
-        path: '/example',
-        element: <commonPages.ExampleCommonPage />
-    },
-    {
         path: '/',
         element: <commonPages.HomePage />
     },
@@ -24,6 +20,10 @@ const commonRoute = [
     {
         path: '/signin',
         element: <commonPages.SignInPage />
+    },
+    {
+        path: '*',
+        element: <commonPages.ExampleCommonPage />
     },
 ]
 
