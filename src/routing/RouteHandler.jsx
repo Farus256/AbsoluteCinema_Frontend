@@ -10,7 +10,7 @@ import userRoute from './routes/UserRoute'
 import adminRoute from './routes/adminRoute'
 
 function RouteHandler() {
-    const currentRoute = [...commonRoute, ...userRoute]
+    const currentRoute = [...commonRoute, ...userRoute, ...adminRoute]
     console.log(currentRoute)
     // Check what kind of user uses web app
     const router = createBrowserRouter([

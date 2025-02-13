@@ -1,0 +1,10 @@
+.hr {
+    height: 1px;
+    color: black;
+}
+
+.sidebar_container {
+    flex: 1;
+    min-height: 100%;
+    background-color: white;
+}
