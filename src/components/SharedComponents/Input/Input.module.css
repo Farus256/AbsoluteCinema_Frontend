@@ -13,3 +13,17 @@
     color: #03010B;
     font-weight: 300;
 }
+
+@media (max-width: 1024px) {
+    .input {
+        padding: 10px; 
+        font-size: 14px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .input {
+        padding: 8px; 
+        font-size: 14px; 
+    }
+}

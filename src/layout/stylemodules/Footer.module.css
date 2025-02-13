@@ -4,3 +4,11 @@ footer {
     display: flex;
     gap: 40px;
 }
+
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+}

@@ -10,3 +10,17 @@
     width: auto;
     flex-shrink: 0;
 }
+
+@media (max-width: 1024px) {
+    .btn {
+        padding: 10px 18px; 
+        font-size: 14px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        padding: 8px 16px; 
+        font-size: 14px; 
+    }
+}
