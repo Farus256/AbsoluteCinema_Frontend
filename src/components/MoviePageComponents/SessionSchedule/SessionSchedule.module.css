@@ -1,0 +1,59 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    border: 2px solid #06050C;
+    overflow: hidden;
+    color: var(--text-color-1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.schedule_date,
+.sessions_container{
+    padding: 30px;
+}
+
+.schedule_date{
+    background-color: var(--session-color);
+}
+
+.sessions_container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 16px; 
+    row-gap: 30px; 
+}
+
+.session_time{
+    font-size: 24px;
+    display: inline-block;
+    background-color: var(--time-color);
+    padding: 2px 40px;
+    border-radius: 12px;
+}
+
+.date_selector{
+    font-size: 24px;
+    text-align: center;
+    text-align-last: center;
+    border-radius: 12px;
+    outline:none;
+    border:none;
+    background-color: var(--white-color);
+    color: var(--text-color-2);
+    width: 100%;
+    padding: 4px 0;
+}
+
+@media (max-width: 600px) {
+    .sessions_container {
+        grid-template-columns: 1fr; 
+    }
+
+    .session_time {
+        font-size: 20px;
+        padding: 8px 16px;
+    }
+}

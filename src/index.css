@@ -1,1 +1,15 @@
-
+:root{
+    --header-color: #04020E;
+    --text-color-1: #F7F5FF;
+    --text-color-2: #03010B;
+    --session-color: #070E24;
+    --time-color: #131D49;
+    --white-color: #F5F5F5;
+}
+.wrapper{
+    flex: 1;
+    padding: 70px 40px 70px 110px;
+    background-color: var(--text-color-1);
+    width: 80%;
+    margin: auto;
+}

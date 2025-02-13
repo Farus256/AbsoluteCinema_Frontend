@@ -1,3 +1,19 @@
 .container{
-    flex: 1;
+    background-color: #04020E;
+    flex: 0;
+}
+
+
+@media (max-width: 600px) {
+    .container-fluid {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 200px;
+    }
 }

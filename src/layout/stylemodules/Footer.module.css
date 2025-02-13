@@ -1,0 +1,14 @@
+footer {
+    padding: 35px 10%;
+    background-color: #04020E;
+    display: flex;
+    gap: 40px;
+}
+
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+}
