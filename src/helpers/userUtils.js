@@ -1,6 +1,5 @@
 import { jwtDecode } from "jwt-decode"
 
-
 function GetUserRoles() {
     const token = localStorage.getItem("token")
     if (token) {
@@ -23,8 +22,19 @@ function GetUserId() {
     }
 
 }
+function GetUserName() {
+    const token = localStorage.getItem("token")
+    if (token) {
+        const decodeToken = jwtDecode(token)
+        let userName = decodeToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
+        return userName
+    } else {
+        return -1
+    }
+}
 
 export default {
     GetUserRoles,
-    GetUserId
+    GetUserId,
+    GetUserName
 };

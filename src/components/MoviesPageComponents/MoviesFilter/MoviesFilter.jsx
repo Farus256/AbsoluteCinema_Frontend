@@ -1,23 +1,58 @@
+import { useEffect, useState } from 'react'
 import styles from './MoviesFilter.module.css'
+import Button from '../../SharedComponents/Button/Button'
 
 function MoviesFilter() {
-    // TODO: add state array to keep track of all checked genres
-    // TODO: retrive genres from backend api in a state then show
+    const [genres, setGenres] = useState([])
+    const [moviesFilter, setMovieFilter] = useState({
+        movieName: null,
+        actors: "",
+        ageRestriction: false,
+        releaseDateFrom: null,
+        releaseDateTo: null,
+        genres: null
+    })
+    function findMovies() {
+    }
+
+    useEffect(() => {
+
+        fetch('https://localhost:7118/api/Genre/GetGenreAll')
+            .then(response => response.json())
+            .then(data => setGenres(data))
+            .catch(err => console.log(err))
+    }, [])
     return (
         <div className={styles.filter_container}>
-            <div className={styles.filter_title}> 
+            <div className={styles.filter_title}>
                 Genres
             </div>
-        <hr/>
+            <hr />
             <div className={styles.filter_genres_container}>
-                <div className={styles.filter_genre}>
-                    <input type="checkbox" id="genre" name="Drama"/>
-                    <lable for="genre">Drama</lable>
+                <label for='movieName'> Movie name</label>
+                <input name='movieName' value={moviesFilter.movieName} />
+                <label for='actors'>Actors</label>
+                <input name='actors' value={moviesFilter.actors} />
+
+                <div>
+                    <div> Age restriction </div>
+                    <label>
+                        <input type='radio' name='age' value={true} /> Yes
+                    </label>
+                    <label>
+                        <input type='radio' name='age' value={false} /> No
+                    </label>
                 </div>
-                <div className={styles.filter_genre}>
-                    <input type="checkbox" id="genre" name="Drama"/>
-                    <lable for="genre">Drama</lable>
-                </div>
+
+                {
+                    genres && genres.map(genre => (
+                        <div className={styles.filter_genre}>
+                            <input type="checkbox" id="genre" name={genre.title} />
+                            <lable for="genre">{genre.title}</lable>
+                        </div>
+                    ))
+                }
+                <Button onClick={findMovies}> Search </Button>
             </div>
         </div>
     )

@@ -17,7 +17,7 @@ function Header() {
                 </div>
                 {
                     isUser ?
-                        (<Link to={`/user/${userId}`} class="btn btn-outline-light" type="submit">User</Link>) :
+                        (<Link to={`/user/${userId}/info`} class="btn btn-outline-light" type="submit">User</Link>) :
                         (<Link to="/signin" class="btn btn-outline-light" type="submit">Sign In</Link>)
                 }
             </div>

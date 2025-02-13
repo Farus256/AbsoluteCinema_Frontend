@@ -1,12 +1,19 @@
+import { useParams } from 'react-router-dom'
 import styles from './SessionSchedule.module.css'
+import { useEffect } from 'react'
 
 
 function SessionSchedule() {
+    const { id } = useParams()
+
+    useEffect(() => {
+    }, [])
     return (
         <div className={` ${styles.container}`}>
             <div className={` ${styles.schedule_date}`}>
                 <h2>Session schedule</h2>
                 <select id="date" className={`${styles.date_selector}`}>
+                    console.log(id)
                     <option value="2025-02-13"> Thu, 13 february  </option>
                     <option value="2025-02-14"> Fri, 14 february  </option>
                 </select>

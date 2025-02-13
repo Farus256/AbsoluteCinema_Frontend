@@ -25,7 +25,7 @@ function MoviePage() {
                 />
                 <SessionSchedule />
             </div>
-            <MovieTrailer title={"Captain America: brave New World"} />
+            <MovieTrailer title={movieInfo.title} url={"https://www.youtube.com/watch?v=1pHDWnXmK7Y"} />
         </div>
     )
 }

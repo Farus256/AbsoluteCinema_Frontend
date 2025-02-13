@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react"
 import styles from "./MovieInfo.module.css"
-import { useParams } from "react-router-dom"
 
 function MovieInfo({ info }) {
     const [genres, setGenres] = useState("")
-    const [actors, setActors] = useState("")
-    const { id } = useParams()
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Genre/GetGenreWithStrategy?MoviesIds=${id}`)
+        fetch(`https://localhost:7118/api/Genre/GetGenreWithStrategy?MoviesIds=${info.id}`)
             .then(response => response.json())
-            .then(data => { setGenres(data.map(genre => genre.title).join(' ')) })
-            .catch(err => console.log(err))
-
-        fetch(`https://localhost:7118/api/Actor/GetActorWithStrategy?MoviesIds=${id}`)
-            .then(response => response.json())
-            .then(data => { setActors(data.map(actor => actor.firstName + " " + actor.lastName).join(' ')) })
+            .then(data => {
+                let genres = ""
+                for (const genre of data) {
+                    console.log(genre.title)
+                    genres + " " + genre.title
+                }
+                setGenres(genres)
+            })
             .catch(err => console.log(err))
     }, [])
+    console.log(genres)
 
     return (
         <>
@@ -31,8 +31,7 @@ function MovieInfo({ info }) {
                         ? 'Invalid date'
                         : new Date(info.releaseDate).toISOString().split('T')[0]
                 } </span>
-                <span>Genres: {genres} </span>
-                <span>Actors: {actors} </span>
+                <span>Genre: {genres} </span>
                 <span>Language: {info.language} </span>
                 <span>Description: {info.discription} </span>
                 <span>Score: {info.score} </span>
