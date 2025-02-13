@@ -1,7 +1,7 @@
 import React from "react";
 
 function GenresList() {
-  return <div>Genres</div>;
+  return <div className="col py-3">Genres</div>;
 }
 
 export default GenresList;

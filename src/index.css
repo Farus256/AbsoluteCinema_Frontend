@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root{
     --header-color: #04020E;
     --text-color-1: #F7F5FF;
@@ -5,6 +7,7 @@
     --session-color: #070E24;
     --time-color: #131D49;
     --white-color: #F5F5F5;
+    --montserrat-font-family: "Montserrat", serif;
 }
 .wrapper{
     flex: 1;

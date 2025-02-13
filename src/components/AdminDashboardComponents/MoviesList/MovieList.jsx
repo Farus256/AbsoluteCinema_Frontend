@@ -1,7 +1,9 @@
 import React from "react";
 
 function MovieList() {
-  return <div>Movies</div>;
+  return (
+    <div></div>
+  );
 }
 
 export default MovieList;
