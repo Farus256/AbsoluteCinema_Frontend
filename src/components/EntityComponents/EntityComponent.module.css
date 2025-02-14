@@ -1,0 +1,43 @@
+.tbody_tr_style:nth-child(2n) {
+    background-color: var(--text-color-1) !important;
+}
+
+.action_button {
+    background-color: var(--time-color);
+    color: var(--text-color-1);
+    border-radius: 12px;
+    padding-block: 6px;
+    padding-inline: 20px;
+    font-family: var(--montserrat-font-family);
+    border: none;
+    transition-duration: 0.3s;
+}
+
+.action_button:hover {
+    background-color: var(--time-color-hover);
+    transition-duration: 0.3s;
+}
+
+.search_style {
+    border-radius: 12px;
+    background-color: var(--input-color);
+    border: none;
+    align-self: center;
+}
+
+.add_button_style {
+    background-color: var(--white-color);
+    color: var(--text-color-2);
+    border-radius: 12px;
+    padding-inline: 20px;
+    font-family: var(--montserrat-font-family);
+    border: none;
+    transition-duration: 0.3s;
+    width: fit-content;
+    align-self: center;
+}
+
+.add_button_style:hover {
+    background-color: var(--white-color-hover);
+    transition-duration: 0.3s;
+}

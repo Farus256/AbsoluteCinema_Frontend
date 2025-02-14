@@ -6,10 +6,10 @@ function Sidebar() {
   const [activeLink, setActiveLink] = useState("movies");
 
   return (
-    <div className="bg-white w-25 pt-4">
-      <div className="fs-4 ms-4 pb-2">
+    <div className="bg-white w-25 pt-4 border-end border-black">
+      <div className="fs-4 ms-4">
         <Link
-          className={` w-100 d-flex px-3 py-1 ${styles.link}`}
+          className={` w-100 d-flex px-3 ${styles.link}`}
           to={"/admindashboard"}
           onClick={() => setActiveLink("")}
         >

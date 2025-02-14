@@ -6,7 +6,10 @@
     --text-color-2: #03010B;
     --session-color: #070E24;
     --time-color: #131D49;
+    --time-color-hover: #131D49BF;
     --white-color: #F5F5F5;
+    --white-color-hover: #F5F5F5BF;
+    --input-color: #EAEAEA;
     --montserrat-font-family: "Montserrat", serif;
 }
 .wrapper{
