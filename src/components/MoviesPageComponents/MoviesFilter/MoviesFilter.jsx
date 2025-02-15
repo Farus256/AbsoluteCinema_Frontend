@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import ReactSlider from 'react-slider';
 import styles from './MoviesFilter.module.css'
 import Button from '../../SharedComponents/Button/Button'
 
@@ -8,8 +9,7 @@ function MoviesFilter() {
         movieName: null,
         actors: "",
         ageRestriction: false,
-        releaseDateFrom: null,
-        releaseDateTo: null,
+        releaseDateRange: [2015, 2025],
         genres: null
     })
     function findMovies() {
@@ -21,17 +21,18 @@ function MoviesFilter() {
             .then(response => response.json())
             .then(data => setGenres(data))
             .catch(err => console.log(err))
-    }, [])
+    }, []);
+
     return (
         <div className={styles.filter_container}>
             <div className={styles.filter_title}>
-                Genres
+                Filter movies
             </div>
             <hr />
             <div className={styles.filter_genres_container}>
-                <label for='movieName'> Movie name</label>
+                <label htmlFor='movieName'> Movie name</label>
                 <input name='movieName' value={moviesFilter.movieName} />
-                <label for='actors'>Actors</label>
+                <label htmlFor='actors'>Actors</label>
                 <input name='actors' value={moviesFilter.actors} />
 
                 <div>
@@ -44,14 +45,33 @@ function MoviesFilter() {
                     </label>
                 </div>
 
+                <div>
+                    <div>Years</div>
+                    <ReactSlider
+                        className={styles.slider}
+                        thumbClassName={styles.thumb}
+                        trackClassName={styles.track}
+                        value={moviesFilter.releaseDateRange}
+                        onChange={(value) => setMovieFilter({ ...moviesFilter, releaseDateRange: value })}
+                        min={2015}
+                        max={2025}
+                        pearling
+                        minDistance={1}
+                    />
+                    <div>{moviesFilter.releaseDateRange[0]} - {moviesFilter.releaseDateRange[1]}</div>
+                </div>
+
+                <div>
+                <div>Genres</div>
                 {
                     genres && genres.map(genre => (
-                        <div className={styles.filter_genre}>
+                        <div key={genre.id} className={styles.filter_genre}>
                             <input type="checkbox" id="genre" name={genre.title} />
-                            <lable for="genre">{genre.title}</lable>
+                            <lable htmlFor="genre">{genre.title}</lable>
                         </div>
                     ))
                 }
+                </div>
                 <Button onClick={findMovies}> Search </Button>
             </div>
         </div>
