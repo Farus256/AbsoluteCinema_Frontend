@@ -12,3 +12,7 @@
 .takenSeat{
     background-color: var(--booked-color);
 }
+
+.selectedSeat{
+    background-color: var(--time-color);
+}

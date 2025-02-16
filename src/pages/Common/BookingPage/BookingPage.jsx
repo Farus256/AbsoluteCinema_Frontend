@@ -13,7 +13,7 @@ function BookingPage() {
     const [ticketsPrice, setTicketsPrice] = useState(0)
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Hall/GetHallById?id=4`)
+        fetch(`https://localhost:7118/api/Hall/GetHallById?id=5`)
             .then(response => response.json())
             .then(data => setPlacement({ hallName: data.name, rowCount: data.rowCount, placeCount: data.placeCount }))
             .catch(err => console.log(err))
@@ -25,7 +25,6 @@ function BookingPage() {
     }, [selectedTickets])
 
     function onClick(row, place) {
-        console.log("onClick", row, place)
         const result = selectedTickets.find(ticket => ticket.row === row && ticket.place === place)
         if (!result) {
             const newTicket = {
@@ -35,11 +34,11 @@ function BookingPage() {
                 hallName: placement.hallName,
                 price: 150
             }
-            console.log(newTicket)
             setSelectedTickets(
                 [...selectedTickets, newTicket]
             )
-            console.log(selectedTickets)
+        } else {
+            deleteItem(row, place)
         }
     }
     function deleteItem(row, place) {
@@ -68,7 +67,7 @@ function BookingPage() {
                     {Array.from({ length: placement.rowCount }, (_, i) => (
                         <>
                             {Array.from({ length: placement.placeCount }, (_, j) => (
-                                <Place key={i + j} row={i} place={j} isBooked={false} onClick={onClick} />
+                                <Place key={i + j} row={i} place={j} isBooked={false} isSelected={selectedTickets.find(ticket => ticket.row === i + 1 && ticket.place === j + 1)} onClick={onClick} />
                             ))}
                         </>
                     ))}
