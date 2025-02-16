@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import styles from "./styles/SignUpPage.module.css"
 
 function SignUpPage() {
+    const navigate = useNavigate()
     const [signUpData, setSignUpData] = useState({
         firstName: "",
         lastName: "",
@@ -37,21 +38,17 @@ function SignUpPage() {
             body: JSON.stringify(signUpData)
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                if (data.result.succeeded) {
+                    localStorage.setItem("token", data.token)
+                    navigate('/')
+                } else {
+                    console.log(data.result.errors)
+                }
+            })
             .catch(err => console.log(err))
     }
 
-    function SignUpPage() {
-        const navigate = useNavigate()
-        const [signUpData, setSignUpData] = useState({
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            age: null
-        })
-    }
 
     function onFormChange(e) {
         console.log(signUpData)
