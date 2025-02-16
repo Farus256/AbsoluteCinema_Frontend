@@ -1,0 +1,14 @@
+
+.takenSeat,
+.emptySeat{
+    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+}
+
+.emptySeat{
+    background-color: var(--empty-color);
+}
+
+.takenSeat{
+    background-color: var(--booked-color);
+}

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styles from './SessionSchedule.module.css'
 import { useEffect } from 'react'
 
@@ -19,11 +19,11 @@ function SessionSchedule() {
                 </select>
             </div>
             <div className={`${styles.sessions_container}`}>
-                <div className={`${styles.session_time}`}> 12:00 </div>
-                <div className={`${styles.session_time}`}> 14:30 </div>
-                <div className={`${styles.session_time}`}> 17:00 </div>
-                <div className={`${styles.session_time}`}> 19:30 </div>
-                <div className={`${styles.session_time}`}> 22:00 </div>
+                <Link to={`/movie/${id}/booking`} className={`${styles.session_time}`}> 12:00 </Link>
+                <Link to={`/movie/${id}/booking`} className={`${styles.session_time}`}> 14:30 </Link>
+                <Link to={`/movie/${id}/booking`} className={`${styles.session_time}`}> 17:00 </Link>
+                <Link to={`/movie/${id}/booking`} className={`${styles.session_time}`}> 19:30 </Link>
+                <Link to={`/movie/${id}/booking`} className={`${styles.session_time}`}> 22:00 </Link>
             </div>
         </div>
     )

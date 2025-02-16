@@ -3,8 +3,12 @@ import styles from './MovieTrailer.module.css'
 
 function MovieTrailer({ title, url }) {
     function convertToEmbedUrl(youtubeUrl) {
-        const videoId = youtubeUrl.split('v=')[1].split('&')[0]; // Extract video ID
-        return `https://www.youtube.com/embed/${videoId}`;
+        if (youtubeUrl) {
+            const videoId = youtubeUrl.split('v=')[1].split('&')[0]; // Extract video ID
+            return `https://www.youtube.com/embed/${videoId}`;
+        } else {
+            return ""
+        }
     }
     return (
         <div className={`${styles.movies_trailer_container}`}>

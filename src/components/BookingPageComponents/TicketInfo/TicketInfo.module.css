@@ -1,0 +1,27 @@
+.ticket_container{
+    padding: 24px 28px;
+    border: 1px solid #4056B9;
+    max-height: 230px;
+    height: auto;
+}
+.ticket {
+  display: grid;
+  gap: 8px; 
+  font-family: Arial, sans-serif;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 150px 1fr; 
+  gap: 16px; 
+}
+
+.label {
+  font-weight: bold;
+  text-align: left;
+}
+
+.value {
+  text-align: left;
+}
+

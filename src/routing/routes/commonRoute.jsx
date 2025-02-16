@@ -10,6 +10,10 @@ const commonRoute = [
         element: <commonPages.MoviesPage />
     },
     {
+        path: '/movie/:id/booking',
+        element: <commonPages.BookingPage />
+    },
+    {
         path: '/movie/:id',
         element: <commonPages.MoviePage />
     },

@@ -5,6 +5,8 @@
     --session-color: #070E24;
     --time-color: #131D49;
     --white-color: #F5F5F5;
+    --empty-color: #D9D9D9;
+    --booked-color: #423C3C;
 }
 .wrapper{
     flex: 1;
