@@ -53,5 +53,3 @@ function UserTickets() {
 }
 
 export default UserTickets
-
-//test
