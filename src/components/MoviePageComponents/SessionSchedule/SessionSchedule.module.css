@@ -32,6 +32,8 @@
     background-color: var(--time-color);
     padding: 2px 40px;
     border-radius: 12px;
+    color: var(--text-color-1);
+    text-decoration: none;
 }
 
 .date_selector{
