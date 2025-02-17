@@ -6,14 +6,21 @@ import arrow from "./../../../assets/next_arrow.svg"
 function MoviesContainer(props) {
     //TODO: receive callback to load next page
     return (
-        <div className={styles.movies_container_wrapper}>
-            <div className={styles.movies_container}>
-             {props.children}
+        <>
+            <div className={styles.movies_container_wrapper}>
+                <div className={styles.movies_container}>
+                    {props.children}
+                </div>
             </div>
-            <div className={styles.next_page_btn}> {/* Handle clicking*/}
-                <img src={arrow} width="40" height="40"/>
+            <div className={styles.pagination_btns}>
+                <div className={styles.previous_page_btn} onClick={props.previousPage}>
+                    <img src={arrow} width="40" height="40" />
+                </div>
+                <div className={styles.next_page_btn} onClick={props.nextPage}>
+                    <img src={arrow} width="40" height="40" />
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

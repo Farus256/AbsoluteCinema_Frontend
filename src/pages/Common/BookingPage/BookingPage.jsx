@@ -28,17 +28,18 @@ function BookingPage() {
     }, [])
 
     useEffect(() => {
-        console.log(sessionInfo)
         fetch(`https://localhost:7118/api/Hall/GetHallById?id=${sessionInfo.hallId || 0}`)
             .then(response => response.json())
             .then(data => setPlacement({ hallName: data.name, rowCount: data.rowCount, placeCount: data.placeCount }))
             .catch(err => console.log(err))
+    }, [sessionInfo])
 
+    useEffect(() => {
         fetch(`https://localhost:7118/api/Ticket/GetTicketWithStrategy?SessionId=${id}`)
             .then(response => response.json())
             .then(data => setBookedTickets(data))
             .catch(err => console.log(err))
-    }, [selectedTickets, sessionInfo])
+    }, [selectedTickets])
 
     useEffect(() => {
         const totalPrice = selectedTickets.reduce((acc, ticket) => acc + ticket.price, 0);
