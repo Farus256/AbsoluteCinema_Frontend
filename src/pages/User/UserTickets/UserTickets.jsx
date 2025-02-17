@@ -4,17 +4,18 @@ import { useEffect, useState } from "react"
 import styles from "./styles/UserTickets.module.css"
 
 function UserTickets() {
-    const { id } = useParams()
+    const { userId } = useParams()
     const [userTickets, setUserTickets] = useState([])
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Ticket/GetTicketWithStrategy?UserId=${id}`)
+        fetch(`https://localhost:7118/api/Ticket/GetTicketsForUser?userId=${userId}`)
             .then(response => response.json())
             .then(tickets => setUserTickets(tickets))
             .catch(err => console.log(err))
 
-        console.log(userTickets)
-    }, [])
+        //console.log(userTickets)
+    }, [userId])
+
     return (
         <div>
             <table className="table">
@@ -30,10 +31,18 @@ function UserTickets() {
                     </tr>
                 </thead>
                 <tbody className="table-group-divider">
-                    <tr>
-                        <th scope="row">1</th>
-                    </tr>
-                </tbody>
+                {userTickets.map((ticket) => (
+                    <tr key={ticket.id}>
+                        <th scope="row">{ticket.id}</th>
+                        <td>{new Date(ticket.session.date).toLocaleString()}</td>
+                            <td>{ticket.session.movie.title}</td>
+                            <td>{ticket.session.hall.name}</td>
+                            <td>{ticket.row}</td>
+                            <td>{ticket.place}</td>
+                            <td>{ticket.status.name}</td>
+                            </tr>
+                        ))}
+                    </tbody>
             </table>
         </div>
     )
