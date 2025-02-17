@@ -36,7 +36,7 @@ function MoviesPage() {
                         }
                     </MoviesContainer>
                 </div>
-                <MoviesFilter />
+                <MoviesFilter setMovies={setMovies} />
             </div>
         </div>
     )
