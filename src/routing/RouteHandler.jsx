@@ -8,8 +8,6 @@ import Layout from '../layout/Layout.jsx'
 import createRoute from './routes/createRoute.js'
 
 function RouteHandler() {
-    const currentRoute = [...commonRoute, ...userRoute, ...adminRoute]
-    console.log(currentRoute)
     // Check what kind of user uses web app
     const router = createBrowserRouter([
         {

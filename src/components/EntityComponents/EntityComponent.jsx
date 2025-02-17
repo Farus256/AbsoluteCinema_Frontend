@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./EntityComponent.module.css";
 import EntityPopup from "./EntityPopup/EntityPopup";
 
-// { tableName, entityType, fetchUrl, createUrl, updateUrl, deleteUrl}
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const EntityComponent = ({
   entityType,
   entityData,
@@ -21,24 +22,56 @@ const EntityComponent = ({
   const [entity, setEntity] = useState({
     title: "",
   });
+  const [canLoad, setCanLoad] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitLoading, setIsInitLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(6);
+  const token = localStorage.getItem("token");
 
   const fetchData = async () => {
-    setLoading(true);
+    if (page == 0 || !canLoad) {
+      console.log("abort loading");
+      return;
+    }
+
+    await sleep(200);
+
+    setIsLoading(true);
+
     try {
-      const response = await fetch(fetchUrl);
+      const response = await fetch(
+        `${fetchUrl}?Page=${page}&PageSize=${pageSize}`
+      );
       const result = await response.json();
       setData(result);
-      console.log(data);
+
+      if (result.length == 0) {
+        setCanLoad(false);
+      }
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
-      setLoading(false);
+      setIsLoading(() => false);
+      setIsInitLoading(true);
     }
+
+    // setLoading(true);
+    // try {
+    //   const response = await fetch(fetchUrl);
+    //   const result = await response.json();
+    //   setData(result);
+    //   console.log(result);
+    // } catch (error) {
+    //   console.error("Error fetching data: ", error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]);
 
   const openPopup = (type, entity) => {
     setEntity(entity);
@@ -53,7 +86,11 @@ const EntityComponent = ({
     try {
       const response = await fetch(createUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(newEntity),
       });
 
@@ -65,6 +102,9 @@ const EntityComponent = ({
       console.log("Added entity:", result);
     } catch (error) {
       console.error(`Error adding:`, error);
+    } finally {
+      clearPopup();
+      await fetchData();
     }
   };
 
@@ -74,6 +114,8 @@ const EntityComponent = ({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updatedEntity),
       });
@@ -86,6 +128,9 @@ const EntityComponent = ({
       console.log("Updated entity:", result);
     } catch (error) {
       console.error("Error updating entity:", error);
+    } finally {
+      clearPopup();
+      await fetchData();
     }
   };
 
@@ -93,6 +138,11 @@ const EntityComponent = ({
     try {
       const response = await fetch(`${deleteUrl}?id=${entityId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {
@@ -100,11 +150,33 @@ const EntityComponent = ({
         throw new Error("Failed to delete entity");
       }
 
-      clearPopup();
     } catch (error) {
       console.error("Error deleting entity:", error);
+    } finally {
+      clearPopup();
+      await fetchData();
     }
   };
+
+  const onPrevPageHandle = () => {
+    if (page == 1) {
+      return;
+    }
+
+    if (!canLoad) {
+      setCanLoad(true);
+    }
+
+    setPage(prev => prev - 1);
+  }
+
+  const onNextPageHandle = () => {
+    if (!canLoad) {
+      return;
+    }
+
+    setPage(prev => prev + 1);
+  }
 
   return (
     <div className="w-100">
@@ -204,6 +276,11 @@ const EntityComponent = ({
               )}
             </tbody>
           </table>
+          <div className="d-flex justify-content-center align-items-center pb-3">
+            <button className="btn btn-primary" type="button" onClick={onPrevPageHandle}>prev</button>
+            <p className="m-0 mx-4">{page}</p>
+            <button className="btn btn-primary" type="button" onClick={onNextPageHandle}>next</button>
+          </div>
         </div>
       </div>
       {popup.isOpen && (
