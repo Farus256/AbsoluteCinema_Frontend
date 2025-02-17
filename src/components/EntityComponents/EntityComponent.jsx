@@ -6,15 +6,21 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const EntityComponent = ({
   entityType,
-  entityData,
   tableName,
   fetchUrl,
   createUrl,
   updateUrl,
   deleteUrl,
+  searchUrl,
 }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [canLoad, setCanLoad] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitLoading, setIsInitLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(6);
+  const [searchQuery, setSearchQuery] = useState("");
   const [popup, setPopup] = useState({
     isOpen: false,
     type: "",
@@ -22,11 +28,6 @@ const EntityComponent = ({
   const [entity, setEntity] = useState({
     title: "",
   });
-  const [canLoad, setCanLoad] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isInitLoading, setIsInitLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(6);
   const token = localStorage.getItem("token");
 
   const fetchData = async () => {
@@ -55,18 +56,6 @@ const EntityComponent = ({
       setIsLoading(() => false);
       setIsInitLoading(true);
     }
-
-    // setLoading(true);
-    // try {
-    //   const response = await fetch(fetchUrl);
-    //   const result = await response.json();
-    //   setData(result);
-    //   console.log(result);
-    // } catch (error) {
-    //   console.error("Error fetching data: ", error);
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   useEffect(() => {
@@ -83,6 +72,7 @@ const EntityComponent = ({
   };
 
   const onAddHandle = async (newEntity) => {
+    console.log(newEntity);
     try {
       const response = await fetch(createUrl, {
         method: "POST",
@@ -97,6 +87,7 @@ const EntityComponent = ({
       if (!response.ok) {
         throw new Error(`Failed to add ${entityType}`);
       }
+
 
       const result = await response.json();
       console.log("Added entity:", result);
@@ -149,7 +140,6 @@ const EntityComponent = ({
         clearPopup();
         throw new Error("Failed to delete entity");
       }
-
     } catch (error) {
       console.error("Error deleting entity:", error);
     } finally {
@@ -167,16 +157,108 @@ const EntityComponent = ({
       setCanLoad(true);
     }
 
-    setPage(prev => prev - 1);
-  }
+    setPage((prev) => prev - 1);
+  };
 
   const onNextPageHandle = () => {
     if (!canLoad) {
       return;
     }
 
-    setPage(prev => prev + 1);
-  }
+    setPage((prev) => prev + 1);
+  };
+
+  const onSearchSubmitHandle = async () => {
+    const pairs = searchQuery.split(",").map((pair) => pair.trim());
+    let searchObject = {};
+
+    for (const pair of pairs) {
+      const match = pair.match(/^(\w+):\s*(.+)$/);
+      if (!match) {
+        console.log(
+          "Невірний формат. Використовуйте 'ключ: значення, ключ: значення'"
+        );
+        return;
+      }
+
+      const key = match[1].trim();
+      let value = match[2].trim();
+
+      // Перевіряємо, чи існує ключ у entityType
+      if (!entityType[key]) {
+        console.log(`Ключ '${key}' не існує в entityType`);
+        return;
+      }
+
+      // Конвертація значень за типом
+      switch (entityType[key].type) {
+        case "int":
+          if (isNaN(Number(value)) || !Number.isInteger(Number(value))) {
+            console.log(`Значення для '${key}' має бути цілим числом`);
+            return;
+          }
+          value = Number(value);
+          break;
+
+        case "double":
+          if (isNaN(Number(value))) {
+            console.log(`Значення для '${key}' має бути десятковим числом`);
+            return;
+          }
+          value = parseFloat(value);
+          break;
+
+        case "bool":
+          if (!["true", "false"].includes(value.toLowerCase())) {
+            console.log(`Значення для '${key}' має бути true або false`);
+            return;
+          }
+          value = value.toLowerCase() === "true";
+          break;
+
+        case "datetime":
+          const dateValue = new Date(value);
+          if (isNaN(dateValue.getTime())) {
+            console.log(
+              `Значення для '${key}' має бути у форматі дати (YYYY-MM-DD або ISO 8601)`
+            );
+            return;
+          }
+          value = dateValue.toISOString(); // Перетворюємо в ISO 8601 формат для API
+          break;
+
+        case "string":
+          break;
+
+        default:
+          console.log(`Невідомий тип для ключа '${key}'`);
+          return;
+      }
+
+      // Додаємо параметр до об'єкта запиту
+      searchObject[key] = value;
+    }
+
+    // Перетворюємо об'єкт у query string
+    const queryParams = new URLSearchParams(searchObject).toString();
+
+    // Формуємо GET-запит з параметрами
+    try {
+      const response = await fetch(`${searchUrl}?${queryParams}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) throw new Error("Помилка пошуку");
+
+      const result = await response.json();
+      setData(result); // Передаємо результати пошуку в батьківський компонент
+    } catch (err) {
+      console.log("Не вдалося виконати запит: ", err);
+    }
+  };
 
   return (
     <div className="w-100">
@@ -186,10 +268,15 @@ const EntityComponent = ({
           style={{ backgroundColor: "var(--time-color)", height: "12.6%" }}
         >
           <p className="mb-0">{tableName}</p>
-          <form className="mx-4 d-flex" action="">
-            <input className={styles.search_style} type="text" />
+          <div className="mx-4 d-flex">
+            <input
+              className={styles.search_style}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <button
-              type="sumbit"
+              type="button"
               style={{
                 backgroundColor: "transparent",
                 border: "none",
@@ -198,12 +285,20 @@ const EntityComponent = ({
                 top: "-2.25px",
                 width: "fit-content",
               }}
+              onClick={onSearchSubmitHandle}
             >
               <img width="30" height="30" src="../src/assets/search_icon.svg" />
             </button>
-          </form>
+          </div>
           <button
-            className={styles.add_button_style}
+            className={`btn btn-secondary fs-5 me-3`}
+            type="button"
+            onClick={fetchData}
+          >
+            Clear Search
+          </button>
+          <button
+            className={`btn btn-secondary fs-5`}
             type="button"
             onClick={() => openPopup("add", undefined)}
           >
@@ -219,7 +314,7 @@ const EntityComponent = ({
           }}
         >
           <table
-            className="w-100 p-4"
+            className="w-100 p-4 table-responsive"
             style={{ borderCollapse: "separate", borderSpacing: "0px 20px" }}
           >
             <thead>
@@ -241,11 +336,11 @@ const EntityComponent = ({
                   >
                     {Object.keys(entityType).map((key) => (
                       <td key={key} className="ps-4 py-3">
-                        {item[key]}
+                        <p className="mb-0">{`${item[key]}`}</p>
                       </td>
                     ))}
                     <td>
-                      <div className="d-flex column-gap-3">
+                      <div className="d-flex column-gap-3 mx-3">
                         <button
                           className={styles.action_button}
                           type="button"
@@ -277,9 +372,21 @@ const EntityComponent = ({
             </tbody>
           </table>
           <div className="d-flex justify-content-center align-items-center pb-3">
-            <button className="btn btn-primary" type="button" onClick={onPrevPageHandle}>prev</button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={onPrevPageHandle}
+            >
+              prev
+            </button>
             <p className="m-0 mx-4">{page}</p>
-            <button className="btn btn-primary" type="button" onClick={onNextPageHandle}>next</button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={onNextPageHandle}
+            >
+              next
+            </button>
           </div>
         </div>
       </div>

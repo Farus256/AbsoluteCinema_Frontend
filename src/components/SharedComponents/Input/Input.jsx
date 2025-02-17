@@ -1,6 +1,6 @@
 import styles from "./Input.module.css"
 
-function Input({ name, type, placeholder, onChange, value, required = false }) {
+function Input({ name, type, placeholder, onChange, value, style, required = false }) {
     return (
         <input
             className={`${styles.input}`}
@@ -10,6 +10,7 @@ function Input({ name, type, placeholder, onChange, value, required = false }) {
             onChange={onChange}
             placeholder={placeholder}
             required={required}
+            style={style}
         />
     )
 }

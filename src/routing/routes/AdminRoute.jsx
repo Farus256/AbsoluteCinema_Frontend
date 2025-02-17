@@ -1,11 +1,11 @@
 import { adminPages } from './../../pages/'
-import ActorsList from '../../components/AdminDashboardComponents/ActorsList/ActorsList'
-import MovieList from '../../components/AdminDashboardComponents/MoviesList/MovieList'
-import GenresList from '../../components/AdminDashboardComponents/GenresList/GenresList'
-import SessionsList from '../../components/AdminDashboardComponents/SessionsList/SessionList'
-import HallsList from '../../components/AdminDashboardComponents/HallsList/HallsList'
-import TicketsList from '../../components/AdminDashboardComponents/TicketsList/TicketsList'
-import UsersList from '../../components/AdminDashboardComponents/UsersList/UsersList'
+import ActorsComponent from '../../components/AdminDashboardComponents/ActorsComponent/ActorsComponent'
+import MoviesComponent from '../../components/AdminDashboardComponents/MoviesComponent/MovieComponent'
+import GenresComponent from '../../components/AdminDashboardComponents/GenresComponent/GenresComponent'
+import SessionsComponent from '../../components/AdminDashboardComponents/SessionsComponent/SessionComponent'
+import HallsComponent from '../../components/AdminDashboardComponents/HallsComponent/HallsComponent'
+import TicketsComponent from '../../components/AdminDashboardComponents/TicketsComponent/TicketsComponent'
+import UsersComponent from '../../components/AdminDashboardComponents/UsersComponent/UsersComponent'
 
 const adminRoute = [
     {
@@ -14,31 +14,31 @@ const adminRoute = [
         children: [
             {
                 path: "movies",
-                element: <MovieList/>
+                element: <MoviesComponent/>
             },
             {
                 path: "genres",
-                element: <GenresList/>
+                element: <GenresComponent/>
             },
             {
                 path: "actors",
-                element: <ActorsList/>
+                element: <ActorsComponent/>
             },
             {
                 path: "sessions",
-                element: <SessionsList/>
+                element: <SessionsComponent/>
             },
             {
                 path: "halls",
-                element: <HallsList/>
+                element: <HallsComponent/>
             },
             {
                 path: "tickets",
-                element: <TicketsList/>
+                element: <TicketsComponent/>
             },
             {
                 path: "users",
-                element: <UsersList/>
+                element: <UsersComponent/>
             },
         ]
     },
