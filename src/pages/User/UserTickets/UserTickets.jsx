@@ -13,8 +13,13 @@ function UserTickets() {
             .then(tickets => setUserTickets(tickets))
             .catch(err => console.log(err))
 
-        console.log(userTickets)
-    }, [])
+        //console.log(userTickets)
+    }, [id])
+
+    useEffect(() => {
+        console.log(userTickets) 
+    }, [userTickets])
+
     return (
         <div>
             <table className="table">
@@ -30,13 +35,23 @@ function UserTickets() {
                     </tr>
                 </thead>
                 <tbody className="table-group-divider">
-                    <tr>
-                        <th scope="row">1</th>
-                    </tr>
-                </tbody>
+                {userTickets.map((ticket, index) => (
+                    <tr key={index}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{ticket.date}</td>
+                            <td>{ticket.movie}</td>
+                            <td>{ticket.hall}</td>
+                            <td>{ticket.row}</td>
+                            <td>{ticket.place}</td>
+                            <td>{ticket.status}</td>
+                            </tr>
+                        ))}
+                    </tbody>
             </table>
         </div>
     )
 }
 
 export default UserTickets
+
+//test
