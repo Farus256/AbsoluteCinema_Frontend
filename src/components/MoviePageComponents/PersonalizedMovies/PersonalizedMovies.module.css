@@ -10,12 +10,6 @@
     font-size: 24px;
   }
   
-  .moviesGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 25px;
-  }
-  
   .movieCard {
     background: #fff;
     border-radius: 10px;
@@ -55,5 +49,5 @@
     text-align: center;
     padding: 30px;
     font-size: 18px;
-    color: #888;
+    color: #000000;
   }

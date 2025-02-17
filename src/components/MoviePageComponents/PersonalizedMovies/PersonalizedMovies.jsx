@@ -28,17 +28,7 @@ function PersonalizedMovies() {
       });
   }, [userId]);
 
-  if (isLoading) return <div className={styles.loader}>Загрузка...</div>;
-
-  if (!userId) return (
-    <div className={styles.notAuth}>
-      <h2>Для рекомендаций войдите в аккаунт</h2>
-    </div>
-  );
-
   return (
-    <div className={styles.wrapper}>
-      <h2 className={styles.title}>Персональные рекомендации</h2>
       <div className={styles.moviesGrid}>
         {movies.length > 0 ? (
           movies.map(movie => (
@@ -56,10 +46,9 @@ function PersonalizedMovies() {
             </div>
           ))
         ) : (
-          <p className={styles.empty}>Рекомендации появятся после оценки фильмов</p>
+          <p className={styles.empty}>None</p>
         )}
       </div>
-    </div>
   );
 }
 
