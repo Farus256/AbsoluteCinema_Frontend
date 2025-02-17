@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import ReactSlider from 'react-slider';
+import ReactSlider from 'react-slider'
+
 import styles from './MoviesFilter.module.css'
 import Button from '../../SharedComponents/Button/Button'
 
@@ -62,15 +63,16 @@ function MoviesFilter() {
                 </div>
 
                 <div>
-                <div>Genres</div>
-                {
-                    genres && genres.map(genre => (
-                        <div key={genre.id} className={styles.filter_genre}>
-                            <input type="checkbox" id="genre" name={genre.title} />
-                            <lable htmlFor="genre">{genre.title}</lable>
-                        </div>
-                    ))
-                }
+                    <div>Genres</div>
+                    {
+                        genres && genres.map(genre => (
+                            <div key={genre.id} className={styles.filter_genre}>
+                                <input type="checkbox" id="genre" name={genre.title} />
+                                <lable htmlFor="genre">{genre.title}</lable>
+                            </div>
+                        ))
+                    }
+
                 </div>
                 <Button onClick={findMovies}> Search </Button>
             </div>
