@@ -12,7 +12,6 @@ function SignInPage() {
     const navigate = useNavigate()
 
     function onFormChange(e) {
-        console.log(signInData)
         setSignInData({ ...signInData, [e.target.name]: e.target.value });
     }
 

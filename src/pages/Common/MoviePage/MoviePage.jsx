@@ -21,6 +21,7 @@ function MoviePage() {
             })
             .catch(err => console.log(err))
     }, [])
+
     return (
         <div className={`wrapper`}>
             <div className={` ${styles.movieinfo}`} >

@@ -1,7 +1,6 @@
 import styles from "./TicketInfo.module.css"
 
-function TicketInfo({ row, place, hallName, title, deleteItem }) {
-    console.log("info", row, place, hallName, title)
+function TicketInfo({ dateTime, row, place, hallName, title, deleteItem }) {
     return (
         <div
             className={`${styles.ticket_container}`}
@@ -10,7 +9,7 @@ function TicketInfo({ row, place, hallName, title, deleteItem }) {
             <div className={`${styles.tickets}`}>
                 <div className={`${styles.row}`}>
                     <span className={`${styles.label}`}>Date & Time</span>
-                    <span className={`${styles.value}`}>2025-02-13 12:00</span>
+                    <span className={`${styles.value}`}>{dateTime}</span>
                 </div>
                 <div className={`${styles.row}`}>
                     <span className={`${styles.label}`}>Movie</span>
