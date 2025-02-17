@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import ReactSlider from 'react-slider'
+
 import styles from './MoviesFilter.module.css'
 import Button from '../../SharedComponents/Button/Button'
 
@@ -71,6 +72,7 @@ function MoviesFilter() {
                             </div>
                         ))
                     }
+
                 </div>
                 <Button onClick={findMovies}> Search </Button>
             </div>
