@@ -38,12 +38,12 @@ function UserTickets() {
                 {userTickets.map((ticket) => (
                     <tr key={ticket.id}>
                         <th scope="row">{ticket.id}</th>
-                        <td>{ticket.date}</td>
-                            <td>{ticket.movie}</td>
-                            <td>{ticket.hall}</td>
+                        <td>{new Date(ticket.session.date).toLocaleString()}</td>
+                            <td>{ticket.session.movie.title}</td>
+                            <td>{ticket.session.hall.name}</td>
                             <td>{ticket.row}</td>
                             <td>{ticket.place}</td>
-                            <td>{ticket.status}</td>
+                            <td>{ticket.status.name}</td>
                             </tr>
                         ))}
                     </tbody>
