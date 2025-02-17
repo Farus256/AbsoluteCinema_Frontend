@@ -16,10 +16,6 @@ function UserTickets() {
         //console.log(userTickets)
     }, [userId])
 
-    useEffect(() => {
-        console.log(userTickets) 
-    }, [userTickets])
-
     return (
         <div>
             <table className="table">
