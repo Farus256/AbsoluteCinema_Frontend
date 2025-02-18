@@ -4,6 +4,7 @@ import MoviesContainer from '../../../components/SharedComponents/MoviesContaine
 import SessionCard from '../../../components/SharedComponents/SessionCard/SessionCard'
 import styles from './styles/MoviesPage.module.css'
 import utils from '../../../helpers/userUtils'
+import { APP_CONFIG } from '../../../env'
 
 function MoviesPage() {
   const pageSize = 6
@@ -14,7 +15,7 @@ function MoviesPage() {
   const [userId, setUserId] = useState(null)
 
     useEffect(() => {
-        fetch(`https://localhost:44371/api/Movie/GetMovieAll?Page=${page}`)
+        fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieAll?Page=${page}`)
             .then(response => response.json())
             .then(data => setMovies(data))
             .catch(err => console.log(err))
@@ -35,7 +36,7 @@ function MoviesPage() {
 
     useEffect(() => {
       if (userId) {
-        fetch(`https://localhost:44371/api/Movie/GetPersonalizedMovieSuggestions?userId=${userId}`)
+        fetch(`${APP_CONFIG.API_URL}/Movie/GetPersonalizedMovieSuggestions?userId=${userId}`)
           .then(response => response.json())
           .then(data => {
             setPersonalMovies(data)
@@ -51,7 +52,6 @@ function MoviesPage() {
     }, [userId])
 
     return (
- feat/add-personalized-movies
       <>
           { userId != -1 && (
               <div className="wrapper">
@@ -77,7 +77,7 @@ function MoviesPage() {
                           )) }
                       </MoviesContainer>
                   </div>
-                  <MoviesFilter />
+                  <MoviesFilter setMovies={setMovies} />
               </div>
           </div>
       </>

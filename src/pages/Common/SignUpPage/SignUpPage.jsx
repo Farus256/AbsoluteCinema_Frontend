@@ -51,7 +51,6 @@ function SignUpPage() {
 
 
     function onFormChange(e) {
-        console.log(signUpData)
         setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
     }
 
@@ -85,12 +84,12 @@ function SignUpPage() {
     return (
         <div className={`${styles.wrapper}`}>
             <InputForm title={"Registration"} onSubmit={onSubmit}>
-                <Input onChange={onFormChange} placehoder={"First Name"} required={true} name={"firstName"} />
-                <Input onChange={onFormChange} placehoder={"Last Name"} required={true} name={"lastName"} />
-                <Input onChange={onFormChange} placehoder={"E-mail"} required={true} name={"email"} />
-                <Input onChange={onFormChange} placehoder={"Password"} required={true} name={"password"} type={"password"} />
-                <Input onChange={onFormChange} placehoder={"Password"} required={true} name={"confirmPassword"} type={"password"} />
-                <Input onChange={onDateChange} placehoder={"Age"} required={true} type={"date"} name={"age"} />
+                <Input onChange={onFormChange} placeholder={"First Name"} required={true} name={"firstName"} />
+                <Input onChange={onFormChange} placeholder={"Last Name"} required={true} name={"lastName"} />
+                <Input onChange={onFormChange} placeholder={"E-mail"} required={true} name={"email"} />
+                <Input onChange={onFormChange} placeholder={"Password"} required={true} name={"password"} type={"password"} />
+                <Input onChange={onFormChange} placeholder={"Password"} required={true} name={"confirmPassword"} type={"password"} />
+                <Input onChange={onDateChange} placeholder={"Age"} required={true} type={"date"} name={"age"} />
                 <Button> Sign up </Button>
             </InputForm>
         </div>
