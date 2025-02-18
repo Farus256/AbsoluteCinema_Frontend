@@ -51,6 +51,7 @@ function MoviesPage() {
     }, [userId])
 
     return (
+ feat/add-personalized-movies
       <>
           { userId != -1 && (
               <div className="wrapper">
@@ -64,6 +65,7 @@ function MoviesPage() {
                   </div>
               </div>
           )}
+
 
           <div className="wrapper">
               <h1 className={styles.movies_header}> Movies </h1>
