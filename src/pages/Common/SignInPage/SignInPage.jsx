@@ -39,8 +39,8 @@ function SignInPage() {
     return (
         <div className={`${styles.wrapper}`}>
             <InputForm title={"Login"} onSubmit={onSubmit}>
-                <Input name="email" value={signInData.email} onChange={onFormChange} placehoder={"E-mail"} required={true} />
-                <Input name="password" value={signInData.password} onChange={onFormChange} placehoder={"Password"} required={true} type={"password"} />
+                <Input name="email" value={signInData.email} onChange={onFormChange} placeholder={"E-mail"} required={true} />
+                <Input name="password" value={signInData.password} onChange={onFormChange} placeholder={"Password"} required={true} type={"password"} />
                 <Button> Sign in </Button>
                 <p className={`${styles.registrantion_link_container}`}>
                     If you don't have an account try <Link to="/signup" className={`${styles.registrantion_link}`}>Registration</Link>.
