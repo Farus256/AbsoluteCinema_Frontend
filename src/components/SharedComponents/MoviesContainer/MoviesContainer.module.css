@@ -1,0 +1,38 @@
+.movies_container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: stretch;
+    grid-auto-rows: auto;
+    column-gap: 15px;
+    row-gap: 24px;
+}
+
+.movies_container_wrapper{
+    position: relative;
+}
+
+.pagination_btns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 40px;
+}
+
+.previous_page_btn,
+.next_page_btn{
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+.previous_page_btn{
+    transform: rotate(180deg);
+}

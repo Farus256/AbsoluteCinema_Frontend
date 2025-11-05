@@ -1,0 +1,53 @@
+.wrapper {
+    padding: 20px 0;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #eee;
+  }
+  
+  .title {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 24px;
+  }
+  
+  .movieCard {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+  
+  .movieCard:hover {
+    transform: translateY(-5px);
+  }
+  
+  .poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .info {
+    padding: 15px;
+  }
+  
+  .info h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: #222;
+  }
+  
+  .info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .loader, .notAuth, .empty {
+    text-align: center;
+    padding: 30px;
+    font-size: 18px;
+    color: #000000;
+  }

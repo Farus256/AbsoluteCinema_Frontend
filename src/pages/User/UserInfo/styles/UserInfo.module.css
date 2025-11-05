@@ -1,0 +1,10 @@
+.form_container{
+    text-align: ;
+    color: var(--text-color-2);
+    font-size: 32px;
+    padding: 45px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+

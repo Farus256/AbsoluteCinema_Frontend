@@ -1,0 +1,9 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.body{
+    background: linear-gradient(to bottom, #030109 0%, #03062B 50%, #000000 100%);
+}
