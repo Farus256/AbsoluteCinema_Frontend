@@ -27,7 +27,7 @@ const commonRoute = [
     },
     {
         path: '*',
-        element: <commonPages.ExampleCommonPage />
+        element: <commonPages.HomePage />
     },
 ]
 

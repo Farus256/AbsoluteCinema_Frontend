@@ -9,6 +9,7 @@ import timeUtils from "../../../helpers/timeUtils"
 import userUtils from "../../../helpers/userUtils"
 
 import styles from "./styles/BookingPage.module.css"
+import { APP_CONFIG } from "../../../env"
 
 function BookingPage() {
     const { id } = useParams()
@@ -18,9 +19,10 @@ function BookingPage() {
     const [selectedTickets, setSelectedTickets] = useState([])
     const [bookedTickets, setBookedTickets] = useState([])
     const [ticketsPrice, setTicketsPrice] = useState(0)
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Session/GetSessionById?id=${id}`)
+        fetch(`${APP_CONFIG.API_URL}/Session/GetSessionById?id=${id}`)
             .then(response => response.json())
             .then(data => setSessionInfo(data))
             .catch(err => console.log(err))
@@ -28,14 +30,14 @@ function BookingPage() {
     }, [])
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Hall/GetHallById?id=${sessionInfo.hallId || 0}`)
+        fetch(`${APP_CONFIG.API_URL}/Hall/GetHallById?id=${sessionInfo.hallId || 0}`)
             .then(response => response.json())
             .then(data => setPlacement({ hallName: data.name, rowCount: data.rowCount, placeCount: data.placeCount }))
             .catch(err => console.log(err))
     }, [sessionInfo])
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Ticket/GetTicketWithStrategy?SessionId=${id}`)
+        fetch(`${APP_CONFIG.API_URL}/Ticket/GetTicketWithStrategy?SessionId=${id}`)
             .then(response => response.json())
             .then(data => setBookedTickets(data))
             .catch(err => console.log(err))
@@ -77,24 +79,28 @@ function BookingPage() {
 
     function bookTickets() {
         selectedTickets.forEach(ticket => {
-            let formData = new FormData()
-            formData.append("SessionId", id)
-            formData.append("UserId", ticket.userId)
-            formData.append("Row", ticket.row)
-            formData.append("Place", ticket.place)
-            formData.append("StatusId", ticket.statusId)
-            formData.append("Price", ticket.price)
-
-            fetch(`https://localhost:7118/api/Ticket/CreateTicket`, {
+            fetch(`${APP_CONFIG.API_URL}/Ticket/CreateTicket`, {
                 method: "POST",
-                body: formData
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    sessionId: Number(id),
+                    userId: ticket.userId,
+                    row: ticket.row,
+                    place: ticket.place,
+                    statusId: ticket.statusId,
+                    price: ticket.price,
+                })
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data) {
-
-                        setSelectedTickets([])
-                    }
+                .then(response => {
+                    if (!response.ok) throw new Error("Booking failed")
+                    return response.json()
+                })
+                .then(() => {
+                    setSelectedTickets([])
                 })
                 .catch(err => console.log(err))
         })

@@ -1,20 +1,21 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { APP_CONFIG } from "../../../env"
 
 import styles from "./styles/UserTickets.module.css"
 
 function UserTickets() {
-    const { userId } = useParams()
+    const { id } = useParams()
     const [userTickets, setUserTickets] = useState([])
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Ticket/GetTicketsForUser?userId=${userId}`)
+        fetch(`${APP_CONFIG.API_URL}/Ticket/GetAllTicketsForUser?userId=${id}`)
             .then(response => response.json())
             .then(tickets => setUserTickets(tickets))
             .catch(err => console.log(err))
 
         //console.log(userTickets)
-    }, [userId])
+    }, [id])
 
     return (
         <div>

@@ -4,8 +4,9 @@ function GetUserRoles() {
     const token = localStorage.getItem("token")
     if (token) {
         const decodeToken = jwtDecode(token)
-        let userRole = decodeToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-        return userRole + " Guest"
+        const roleClaim = decodeToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        const roles = Array.isArray(roleClaim) ? roleClaim : [roleClaim].filter(Boolean)
+        return [...roles, "Guest"].join(" ")
     } else {
         return "Guest"
     }

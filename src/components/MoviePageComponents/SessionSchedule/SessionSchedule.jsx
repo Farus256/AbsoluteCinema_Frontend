@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import styles from './SessionSchedule.module.css'
 import { useEffect, useState } from 'react'
+import { APP_CONFIG } from '../../../env'
 
 import timeUtils from '../../../helpers/timeUtils'
 
@@ -11,7 +12,7 @@ function SessionSchedule() {
     const [sessionsByDate, setSessionsByDate] = useState([])
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Session/GetUpcomingSessionsByMovie?MovieId=${id}`)
+        fetch(`${APP_CONFIG.API_URL}/Session/GetUpcomingSessionsByMovie?MovieId=${id}`)
             .then(response => response.json())
             .then(data => {
                 setSessions(getUniqueSessions(data))
@@ -21,7 +22,7 @@ function SessionSchedule() {
     }, [])
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Session/GetSessionWithStrategy?MovieId=${id}&Date=${selectedDate}`)
+        fetch(`${APP_CONFIG.API_URL}/Session/GetSessionWithStrategy?MovieId=${id}&Date=${selectedDate}`)
             .then(response => response.json())
             .then(data => setSessionsByDate(data))
             .catch(err => console.log(err))

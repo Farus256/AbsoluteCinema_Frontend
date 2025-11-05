@@ -7,11 +7,12 @@ import styles from './Slider.module.css'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { useEffect, useState } from 'react'
+import { APP_CONFIG } from '../../../env'
 
 function Slider() {
     const [homePageMovies, setHomePageMovies] = useState([])
     useEffect(() => {
-        fetch('https://localhost:7118/api/Movie/GetMovieAll?OrderByProperty=releaseDate&OrderDirection=desc')
+        fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieAll?OrderByProperty=releaseDate&OrderDirection=desc`)
             .then(response => response.json())
             .then(data => setHomePageMovies(data))
             .catch(err => console.log(err))

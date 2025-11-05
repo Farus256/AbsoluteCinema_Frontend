@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./PersonalizedMovies.module.css";
 import utils from '../../../helpers/userUtils';
+import { APP_CONFIG } from '../../../env'
 
 function PersonalizedMovies() {
   const [movies, setMovies] = useState([]);
@@ -13,7 +14,7 @@ function PersonalizedMovies() {
       return;
     }
 
-    fetch(`https://localhost:44371/api/Movie/GetPersonalizedMovies?userId=${userId}`)
+    fetch(`${APP_CONFIG.API_URL}/Movie/GetPersonalizedMovieSuggestions?userId=${userId}`)
       .then(response => {
         if (!response.ok) throw new Error("Ошибка загрузки");
         return response.json();

@@ -7,13 +7,14 @@ import { useMovie } from '../../../helpers/Providers/MovieContext'
 import styles from "./styles/MoviePage.module.css"
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { APP_CONFIG } from '../../../env'
 
 function MoviePage() {
     const { id } = useParams()
     const { selectedMovie, setSelectedMovie } = useMovie()
 
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Movie/GetMovieById?id=${id}`)
+        fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieById?id=${id}`)
             .then(response => response.json())
             .then(data => {
                 setSelectedMovie(data)

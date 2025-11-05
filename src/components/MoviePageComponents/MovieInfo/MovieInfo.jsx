@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react"
 import styles from "./MovieInfo.module.css"
 import { useParams } from "react-router-dom"
+import { APP_CONFIG } from '../../../env'
 
 function MovieInfo({ info }) {
     const [genres, setGenres] = useState("")
     const [actors, setActors] = useState("")
     const { id } = useParams()
     useEffect(() => {
-        fetch(`https://localhost:7118/api/Genre/GetGenreWithStrategy?MoviesIds=${id}`)
+        fetch(`${APP_CONFIG.API_URL}/Genre/GetGenreWithStrategy?MoviesIds=${id}`)
             .then(response => response.json())
             .then(data => { setGenres(data.map(genre => genre.title).join(' ')) })
             .catch(err => console.log(err))
 
-        fetch(`https://localhost:7118/api/Actor/GetActorWithStrategy?MoviesIds=${id}`)
+        fetch(`${APP_CONFIG.API_URL}/Actor/GetActorWithStrategy?MoviesIds=${id}`)
             .then(response => response.json())
             .then(data => { setActors(data.map(actor => actor.firstName + " " + actor.lastName).join(' ')) })
             .catch(err => console.log(err))

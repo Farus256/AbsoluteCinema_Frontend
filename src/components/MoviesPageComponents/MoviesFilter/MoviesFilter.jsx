@@ -3,6 +3,7 @@ import ReactSlider from 'react-slider'
 
 import styles from './MoviesFilter.module.css'
 import Button from '../../SharedComponents/Button/Button'
+import { APP_CONFIG } from '../../../env'
 
 function MoviesFilter({ setMovies }) {
     const [genres, setGenres] = useState([])
@@ -14,7 +15,7 @@ function MoviesFilter({ setMovies }) {
         genres: []
     })
     function findMovies() {
-        fetch(`https://localhost:7118/api/Movie/GetMovieWithStrategy?Title=${moviesFilter.movieName}&Adult=${moviesFilter.ageRestriction}&ReleaseDateFrom=${moviesFilter.releaseDateRange[0] + "-01-01"}&ReleaseDateTo=${moviesFilter.releaseDateRange[1] + "-12-31"}${moviesFilter.genres.map(id => `&GenresIds=${id}`).join("")} `)
+        fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieWithStrategy?Title=${moviesFilter.movieName}&Adult=${moviesFilter.ageRestriction}&ReleaseDateFrom=${moviesFilter.releaseDateRange[0] + "-01-01"}&ReleaseDateTo=${moviesFilter.releaseDateRange[1] + "-12-31"}${moviesFilter.genres.map(id => `&GenresIds=${id}`).join("")}`)
             .then(response => response.json())
             .then(data => setMovies(data))
             .catch(error => console.log(error))
@@ -22,7 +23,7 @@ function MoviesFilter({ setMovies }) {
     }
 
     useEffect(() => {
-        fetch('https://localhost:7118/api/Genre/GetGenreAll')
+        fetch(`${APP_CONFIG.API_URL}/Genre/GetGenreAll`)
             .then(response => response.json())
             .then(data => setGenres(data))
             .catch(err => console.log(err))

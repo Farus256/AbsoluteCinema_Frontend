@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import styles from "./styles/SignInPage.module.css"
 import { useState } from "react";
+import { APP_CONFIG } from "../../../env";
 
 function SignInPage() {
     const [signInData, setSignInData] = useState({ email: "", password: "" })
@@ -17,7 +18,7 @@ function SignInPage() {
 
     function onSubmit(e) {
         e.preventDefault()
-        fetch("https://localhost:7118/api/Auth/SignIn", {
+        fetch(`${APP_CONFIG.API_URL}/Auth/SignIn`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -28,7 +29,7 @@ function SignInPage() {
             .then(data => {
                 if (data.result.succeeded) {
                     localStorage.setItem("token", data.token)
-                    navigate('/')
+                    window.location.replace('/')
                 } else {
                     console.log(data.result.errors)
                 }

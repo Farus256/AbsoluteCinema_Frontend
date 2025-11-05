@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import Input from "../../../components/SharedComponents/Input/Input"
 import styles from "./styles/UserInfo.module.css"
 import Button from "../../../components/SharedComponents/Button/Button";
+import { APP_CONFIG } from "../../../env";
 
 function UserInfo() {
     const { id } = useParams();
@@ -11,7 +12,7 @@ function UserInfo() {
         firstName: "",
         lastName: "",
         email: "",
-        age: null
+        birthDate: ""
     })
 
     const token = localStorage.getItem("token");
@@ -19,7 +20,7 @@ function UserInfo() {
     useEffect(() => {
         async function fetchUserData() {
             try {
-                const response = await fetch(`https://localhost:7118/api/User/${id}`, {
+                const response = await fetch(`${APP_CONFIG.API_URL}/User/GetUserById?id=${id}`, {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -33,7 +34,7 @@ function UserInfo() {
                         firstName: userData.firstName,
                         lastName: userData.lastName,
                         email: userData.email,
-                        age: userData.age
+                        birthDate: (userData.birthDate || "").toString().slice(0,10)
                     });
                 } else {
                     console.error("Failed to fetch user data");
@@ -55,14 +56,13 @@ function UserInfo() {
 
     function onDateChange(e) {
         const rawDate = e.target.value; // "YYYY-MM-DD"
-        const formattedDate = new Date(rawDate).toLocaleDateString("en-GB");
-        setSignUpData({ ...signUpData, age: formattedDate })
+        setSignUpData({ ...signUpData, birthDate: rawDate })
     }
 
     async function changeUserInfo(e) {
         e.preventDefault();
         try {
-            const response = await fetch(`https://localhost:7118/api/User/${id}`, {
+            const response = await fetch(`${APP_CONFIG.API_URL}/User/UpdateUser`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -73,7 +73,7 @@ function UserInfo() {
                     firstName: signUpData.firstName,
                     lastName: signUpData.lastName,
                     email: signUpData.email,
-                    birthDate: signUpData.age, 
+                    birthDate: signUpData.birthDate,
                 })
             });
 
@@ -100,8 +100,8 @@ function UserInfo() {
                 <Input onChange={onFormChange} placeholder={"Last Name"} required={true} name={"lastName"} value={signUpData.lastName}/>
                 <label htmlFor="email"> E-mail </label>
                 <Input onChange={onFormChange} placeholder={"E-mail"} required={true} name={"email"} value={signUpData.email}/>
-                <label htmlFor="age"> Birth Date </label>
-                <Input onChange={onDateChange} placeholder={"Age"} required={true} type={"date"} name={"age"} value={signUpData.age || ""}/>
+                <label htmlFor="birthDate"> Birth Date </label>
+                <Input onChange={onDateChange} placeholder={"Birth Date"} required={true} type={"date"} name={"birthDate"} value={signUpData.birthDate || ""}/>
                 <Button> Update </Button>
             </form>
         </div>
