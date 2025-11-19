@@ -17,7 +17,6 @@ function MoviesPage() {
   const [isPersonalLoading, setIsPersonalLoading] = useState(true)
   const [userId, setUserId] = useState(null)
 
-  // загрузка общих фильмов (с пагинацией и pageSize)
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
@@ -36,7 +35,6 @@ function MoviesPage() {
     return () => ac.abort()
   }, [page])
 
-  // кнопки пагинации
   function nextPage() {
     if (movies.length === pageSize) setPage(p => p + 1)
   }
@@ -44,13 +42,11 @@ function MoviesPage() {
     setPage(p => Math.max(1, p - 1))
   }
 
-  // получить userId (например, из localStorage/JWT)
   useEffect(() => {
     const id = utils.GetUserId()
-    setUserId(id) // ожидается -1 для гостя, иначе число/строка
+    setUserId(id)
   }, [])
 
-  // персональные рекомендации
   useEffect(() => {
     const ac = new AbortController()
     setIsPersonalLoading(true)
@@ -103,7 +99,6 @@ function MoviesPage() {
         </div>
       )}
 
-      {/* Можно показать спиннер вместо рекомендаций */}
       {!showRecommended && !isPersonalLoading && userId !== -1 && (
         <div className="wrapper">
           <h2 className={styles.movies_header}>No personalized picks yet</h2>
@@ -125,7 +120,7 @@ function MoviesPage() {
               ))}
             </MoviesContainer>
           </div>
-          <MoviesFilter />
+          <MoviesFilter setMovies={setMovies} />
         </div>
       </div>
     </>

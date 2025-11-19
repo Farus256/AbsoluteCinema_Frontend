@@ -4,7 +4,6 @@ import arrow from "./../../../assets/next_arrow.svg"
 
 
 function MoviesContainer(props) {
-    //TODO: receive callback to load next page
     return (
         <>
             <div className={styles.movies_container_wrapper}>

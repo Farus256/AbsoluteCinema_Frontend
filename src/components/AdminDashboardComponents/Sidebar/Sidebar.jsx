@@ -21,6 +21,17 @@ function Sidebar() {
         <li className="nav-item w-100 my-2">
           <Link
             className={`w-100 d-flex px-3 py-1 ${
+              activeLink === "server-status" ? styles.active_link : styles.link
+            }`}
+            onClick={() => setActiveLink("server-status")}
+            to={"/admindashboard/server-status"}
+          >
+            Server Status
+          </Link>
+        </li>
+        <li className="nav-item w-100 my-2">
+          <Link
+            className={`w-100 d-flex px-3 py-1 ${
               activeLink === "movies" ? styles.active_link : styles.link
             }`}
             onClick={() => setActiveLink("movies")}

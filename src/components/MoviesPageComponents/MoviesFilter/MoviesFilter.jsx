@@ -15,9 +15,15 @@ function MoviesFilter({ setMovies }) {
         genres: []
     })
     function findMovies() {
-        fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieWithStrategy?Title=${moviesFilter.movieName}&Adult=${moviesFilter.ageRestriction}&ReleaseDateFrom=${moviesFilter.releaseDateRange[0] + "-01-01"}&ReleaseDateTo=${moviesFilter.releaseDateRange[1] + "-12-31"}${moviesFilter.genres.map(id => `&GenresIds=${id}`).join("")}`)
+        const encodedTitle = encodeURIComponent(moviesFilter.movieName || '')
+        const url = `${APP_CONFIG.API_URL}/Movie/GetMovieWithStrategy?Title=${encodedTitle}&Adult=${moviesFilter.ageRestriction}&ReleaseDateFrom=${moviesFilter.releaseDateRange[0] + "-01-01"}&ReleaseDateTo=${moviesFilter.releaseDateRange[1] + "-12-31"}${moviesFilter.genres.map(id => `&GenresIds=${id}`).join("")}`
+        fetch(url)
             .then(response => response.json())
-            .then(data => setMovies(data))
+            .then(data => {
+                if (setMovies) {
+                    setMovies(Array.isArray(data) ? data : [])
+                }
+            })
             .catch(error => console.log(error))
 
     }
@@ -41,11 +47,10 @@ function MoviesFilter({ setMovies }) {
 
         }
     }
-    console.log(moviesFilter)
 
     function setAgeRestriction(e) {
-        console.log("age", e.target.value)
-        setMovieFilter({ ...moviesFilter, ageRestriction: e.target.value })
+        const value = e.target.value === 'true' || e.target.value === true
+        setMovieFilter({ ...moviesFilter, ageRestriction: value })
     }
 
 
@@ -61,10 +66,10 @@ function MoviesFilter({ setMovies }) {
                 <div>
                     <div> Age restriction </div>
                     <label>
-                        <input checked={moviesFilter.ageRestriction === true} type='radio' name='age' value={true} onChange={setAgeRestriction} /> Yes
+                        <input checked={moviesFilter.ageRestriction === true} type='radio' name='age' value='true' onChange={setAgeRestriction} /> Yes
                     </label>
                     <label>
-                        <input checked={moviesFilter.ageRestriction === false} type='radio' name='age' value={false} onChange={setAgeRestriction} /> No
+                        <input checked={moviesFilter.ageRestriction === false} type='radio' name='age' value='false' onChange={setAgeRestriction} /> No
                     </label>
                 </div>
 
@@ -89,8 +94,8 @@ function MoviesFilter({ setMovies }) {
                     {
                         genres && genres.map(genre => (
                             <div key={genre.id} className={styles.filter_genre}>
-                                <input type="checkbox" id="genre" name={genre.title} onChange={(e) => updateGenres(e, genre.id)} />
-                                <lable htmlFor="genre">{genre.title}</lable>
+                                <input type="checkbox" id={`genre-${genre.id}`} name={genre.title} onChange={(e) => updateGenres(e, genre.id)} />
+                                <label htmlFor={`genre-${genre.id}`}>{genre.title}</label>
                             </div>
                         ))
                     }

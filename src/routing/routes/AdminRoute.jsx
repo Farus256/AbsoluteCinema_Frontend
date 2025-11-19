@@ -6,12 +6,17 @@ import SessionsComponent from '../../components/AdminDashboardComponents/Session
 import HallsComponent from '../../components/AdminDashboardComponents/HallsComponent/HallsComponent'
 import TicketsComponent from '../../components/AdminDashboardComponents/TicketsComponent/TicketsComponent'
 import UsersComponent from '../../components/AdminDashboardComponents/UsersComponent/UsersComponent'
+import ServerStatusComponent from '../../components/AdminDashboardComponents/ServerStatusComponent/ServerStatusComponent'
 
 const adminRoute = [
     {
         path: '/admindashboard',
         element: <adminPages.AdminDashboard/>,
         children: [
+            {
+                path: "server-status",
+                element: <ServerStatusComponent/>
+            },
             {
                 path: "movies",
                 element: <MoviesComponent/>

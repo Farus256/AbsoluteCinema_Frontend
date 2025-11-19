@@ -1,7 +1,9 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = 'http://localhost:5299/api';
+const HUB_BASE_URL = 'http://localhost:5299';
 
 const APP_CONFIG = {
   API_URL: API_BASE_URL,
+  HUB_URL: HUB_BASE_URL,
 };
 
 export { APP_CONFIG };

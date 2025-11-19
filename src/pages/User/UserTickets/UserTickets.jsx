@@ -12,9 +12,7 @@ function UserTickets() {
         fetch(`${APP_CONFIG.API_URL}/Ticket/GetAllTicketsForUser?userId=${id}`)
             .then(response => response.json())
             .then(tickets => setUserTickets(tickets))
-            .catch(err => console.log(err))
-
-        //console.log(userTickets)
+            .catch(err => console.error(err))
     }, [id])
 
     return (

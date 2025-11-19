@@ -19,6 +19,7 @@ const EntityComponent = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isInitLoading, setIsInitLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [error, setError] = useState(null);
   const [pageSize] = useState(6);
   const [searchQuery, setSearchQuery] = useState("");
   const [popup, setPopup] = useState({
@@ -39,27 +40,40 @@ const EntityComponent = ({
     await sleep(200);
 
     setIsLoading(true);
+    setLoading(true);
 
     try {
-      const response = await fetch(
-        `${fetchUrl}?Page=${page}&PageSize=${pageSize}`
-      );
+      const url = `${fetchUrl}?Page=${page}&PageSize=${pageSize}`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const result = await response.json();
-      setData(result);
+      const dataArray = Array.isArray(result) ? result : [];
+      setData(dataArray);
 
       if (result.length == 0) {
         setCanLoad(false);
+      } else {
+        setCanLoad(true);
       }
+      setError(null);
     } catch (error) {
       console.error("Error fetching data: ", error);
+      setData([]);
+      setError(error.message || 'Помилка завантаження даних');
     } finally {
-      setIsLoading(() => false);
+      setIsLoading(false);
+      setLoading(false);
       setIsInitLoading(true);
     }
   };
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const openPopup = (type, entity) => {
@@ -90,7 +104,6 @@ const EntityComponent = ({
 
 
       const result = await response.json();
-      console.log("Added entity:", result);
     } catch (error) {
       console.error(`Error adding:`, error);
     } finally {
@@ -116,7 +129,6 @@ const EntityComponent = ({
       }
 
       const result = await response.json();
-      console.log("Updated entity:", result);
     } catch (error) {
       console.error("Error updating entity:", error);
     } finally {
@@ -175,26 +187,19 @@ const EntityComponent = ({
     for (const pair of pairs) {
       const match = pair.match(/^(\w+):\s*(.+)$/);
       if (!match) {
-        console.log(
-          "Невірний формат. Використовуйте 'ключ: значення, ключ: значення'"
-        );
         return;
       }
 
       const key = match[1].trim();
       let value = match[2].trim();
 
-      // Перевіряємо, чи існує ключ у entityType
       if (!entityType[key]) {
-        console.log(`Ключ '${key}' не існує в entityType`);
         return;
       }
 
-      // Конвертація значень за типом
       switch (entityType[key].type) {
         case "int":
           if (isNaN(Number(value)) || !Number.isInteger(Number(value))) {
-            console.log(`Значення для '${key}' має бути цілим числом`);
             return;
           }
           value = Number(value);
@@ -202,7 +207,6 @@ const EntityComponent = ({
 
         case "double":
           if (isNaN(Number(value))) {
-            console.log(`Значення для '${key}' має бути десятковим числом`);
             return;
           }
           value = parseFloat(value);
@@ -210,7 +214,6 @@ const EntityComponent = ({
 
         case "bool":
           if (!["true", "false"].includes(value.toLowerCase())) {
-            console.log(`Значення для '${key}' має бути true або false`);
             return;
           }
           value = value.toLowerCase() === "true";
@@ -219,30 +222,23 @@ const EntityComponent = ({
         case "datetime":
           const dateValue = new Date(value);
           if (isNaN(dateValue.getTime())) {
-            console.log(
-              `Значення для '${key}' має бути у форматі дати (YYYY-MM-DD або ISO 8601)`
-            );
             return;
           }
-          value = dateValue.toISOString(); // Перетворюємо в ISO 8601 формат для API
+          value = dateValue.toISOString();
           break;
 
         case "string":
           break;
 
         default:
-          console.log(`Невідомий тип для ключа '${key}'`);
           return;
       }
 
-      // Додаємо параметр до об'єкта запиту
       searchObject[key] = value;
     }
 
-    // Перетворюємо об'єкт у query string
     const queryParams = new URLSearchParams(searchObject).toString();
 
-    // Формуємо GET-запит з параметрами
     try {
       const response = await fetch(`${searchUrl}?${queryParams}`, {
         method: "GET",
@@ -254,9 +250,9 @@ const EntityComponent = ({
       if (!response.ok) throw new Error("Помилка пошуку");
 
       const result = await response.json();
-      setData(result); // Передаємо результати пошуку в батьківський компонент
+      setData(result);
     } catch (err) {
-      console.log("Не вдалося виконати запит: ", err);
+      console.error("Не вдалося виконати запит: ", err);
     }
   };
 
@@ -293,7 +289,12 @@ const EntityComponent = ({
           <button
             className={`btn btn-secondary fs-5 me-3`}
             type="button"
-            onClick={fetchData}
+            onClick={() => {
+              setSearchQuery("");
+              setPage(1);
+              setCanLoad(true);
+              fetchData();
+            }}
           >
             Clear Search
           </button>
@@ -328,37 +329,82 @@ const EntityComponent = ({
               </tr>
             </thead>
             <tbody>
-              {data.length > 0 ? (
-                data.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`ps-4 py-3 bg-white shadow-sm ${styles.tbody_tr_style}`}
+              {loading ? (
+                <tr>
+                  <td
+                    colSpan={Object.keys(entityType).length + 1}
+                    className="text-center p-4"
                   >
-                    {Object.keys(entityType).map((key) => (
-                      <td key={key} className="ps-4 py-3">
-                        <p className="mb-0">{`${item[key]}`}</p>
+                    Завантаження...
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td
+                    colSpan={Object.keys(entityType).length + 1}
+                    className="text-center p-4 text-danger"
+                  >
+                    Помилка: {error}
+                  </td>
+                </tr>
+              ) : data.length > 0 ? (
+                data.map((item, index) => {
+                  const formatValue = (key, value) => {
+                    if (value === null || value === undefined) {
+                      return 'N/A';
+                    }
+                    
+                    if (entityType[key]?.type === 'datetime') {
+                      try {
+                        const date = new Date(value);
+                        if (!isNaN(date.getTime())) {
+                          return date.toLocaleString('uk-UA', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          });
+                        }
+                      } catch (e) {
+                        console.error('Помилка форматування дати:', e);
+                      }
+                    }
+                    
+                    return String(value);
+                  };
+                  
+                  return (
+                    <tr
+                      key={item.id || index}
+                      className={`ps-4 py-3 bg-white shadow-sm ${styles.tbody_tr_style}`}
+                    >
+                      {Object.keys(entityType).map((key) => (
+                        <td key={key} className="ps-4 py-3">
+                          <p className="mb-0">{formatValue(key, item[key])}</p>
+                        </td>
+                      ))}
+                      <td>
+                        <div className="d-flex column-gap-3 mx-3">
+                          <button
+                            className={styles.action_button}
+                            type="button"
+                            onClick={() => openPopup("update", item)}
+                          >
+                            Update
+                          </button>
+                          <button
+                            className={styles.action_button}
+                            type="button"
+                            onClick={() => openPopup("delete", item)}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
-                    ))}
-                    <td>
-                      <div className="d-flex column-gap-3 mx-3">
-                        <button
-                          className={styles.action_button}
-                          type="button"
-                          onClick={() => openPopup("update", item)}
-                        >
-                          Update
-                        </button>
-                        <button
-                          className={styles.action_button}
-                          type="button"
-                          onClick={() => openPopup("delete", item)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td

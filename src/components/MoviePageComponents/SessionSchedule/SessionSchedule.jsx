@@ -12,21 +12,54 @@ function SessionSchedule() {
     const [sessionsByDate, setSessionsByDate] = useState([])
 
     useEffect(() => {
-        fetch(`${APP_CONFIG.API_URL}/Session/GetUpcomingSessionsByMovie?MovieId=${id}`)
-            .then(response => response.json())
-            .then(data => {
-                setSessions(getUniqueSessions(data))
-                setSelectedDate(timeUtils.stripDateTime(data[0]?.date) || "")
+        const url = `${APP_CONFIG.API_URL}/Session/GetUpcomingSessionsByMovie?movieId=${id}`
+        
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                return response.json()
             })
-            .catch(err => console.log(err))
-    }, [])
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    setSessions(getUniqueSessions(data))
+                    setSelectedDate(timeUtils.stripDateTime(data[0]?.date) || "")
+                } else {
+                    setSessions([])
+                    setSelectedDate("")
+                }
+            })
+            .catch(err => {
+                console.error('Помилка завантаження сесій:', err)
+                setSessions([])
+            })
+    }, [id])
 
     useEffect(() => {
-        fetch(`${APP_CONFIG.API_URL}/Session/GetSessionWithStrategy?MovieId=${id}&Date=${selectedDate}`)
-            .then(response => response.json())
-            .then(data => setSessionsByDate(data))
-            .catch(err => console.log(err))
-    }, [selectedDate])
+        if (!selectedDate) {
+            setSessionsByDate([])
+            return
+        }
+        
+        const formattedDate = selectedDate.includes('T') ? selectedDate.split('T')[0] : selectedDate
+        const url = `${APP_CONFIG.API_URL}/Session/GetSessionWithStrategy?MovieId=${id}&Date=${formattedDate}`
+        
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                return response.json()
+            })
+            .then(data => {
+                setSessionsByDate(Array.isArray(data) ? data : [])
+            })
+            .catch(err => {
+                console.error('Помилка завантаження сесій за датою:', err)
+                setSessionsByDate([])
+            })
+    }, [selectedDate, id])
 
     function getUniqueSessions(sessions) {
         const uniqueSessions = new Map();
