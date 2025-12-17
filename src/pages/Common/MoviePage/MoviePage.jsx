@@ -30,6 +30,7 @@ function MoviePage() {
                     posterPath: response.posterPath,
                     language: response.language,
                     releaseDate: response.releaseDate,
+                    //trailerPath: response.trailerPath || "",
                 }
                 setSelectedMovie(mappedMovie)
                 sessionStorage.setItem("movieTitle", mappedMovie.title)
@@ -45,25 +46,13 @@ function MoviePage() {
                 const res = await fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieById?id=${id}`)
                 const data = await res.json()
                 if (ignore) return
-                // Update only the trailerPath field
+                
                 setSelectedMovie(prev => ({
                     ...prev,
                     trailerPath: data.trailerPath
                 }))
             } catch (err) {
                 if (!ignore) console.error('Failed to fetch trailer via REST:', err)
-            }
-        }
-
-        const loadViaRest = async () => {
-            try {
-                const res = await fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieById?id=${id}`)
-                const data = await res.json()
-                if (ignore) return
-                setSelectedMovie(data)
-                sessionStorage.setItem("movieTitle", data.title)
-            } catch (err) {
-                if (!ignore) console.error(err)
             }
         }
 
