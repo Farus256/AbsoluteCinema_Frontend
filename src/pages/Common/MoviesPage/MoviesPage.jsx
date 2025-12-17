@@ -1,4 +1,8 @@
+// src/pages/Common/MoviesPage/MoviesPage.jsx
 import { useEffect, useState } from 'react'
+import { gql } from '@apollo/client'
+import { useGraphQLQuery } from '../../../hooks/useGraphQLQuery'
+
 import MoviesFilter from '../../../components/MoviesPageComponents/MoviesFilter/MoviesFilter'
 import MoviesContainer from '../../../components/SharedComponents/MoviesContainer/MoviesContainer'
 import SessionCard from '../../../components/SharedComponents/SessionCard/SessionCard'
@@ -6,34 +10,46 @@ import styles from './styles/MoviesPage.module.css'
 import utils from '../../../helpers/userUtils'
 import { APP_CONFIG } from '../../../env'
 
+// GraphQL: paged movies
+const GET_MOVIES_PAGED = gql`
+  query GetMoviesPaged($page: Int!, $pageSize: Int!) {
+    moviesPaged(page: $page, pageSize: $pageSize) {
+      id
+      title
+      posterPath
+    }
+  }
+`
+
 function MoviesPage() {
   const pageSize = 6
   const API_BASE = APP_CONFIG.API_URL
 
-  const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
+  const [movies, setMovies] = useState([])
 
   const [personalMovies, setPersonalMovies] = useState([])
   const [isPersonalLoading, setIsPersonalLoading] = useState(true)
   const [userId, setUserId] = useState(null)
 
+  
   useEffect(() => {
-    const ac = new AbortController()
-    ;(async () => {
-      try {
-        const res = await fetch(
-          `${API_BASE}/Movie/GetMovieAll?Page=${page}&PageSize=${pageSize}`,
-          { signal: ac.signal }
-        )
-        if (!res.ok) throw new Error(`Failed: ${res.status}`)
-        const data = await res.json()
-        setMovies(Array.isArray(data) ? data : [])
-      } catch (e) {
-        if (e.name !== 'AbortError') console.error(e)
-      }
-    })()
-    return () => ac.abort()
-  }, [page])
+    const id = utils.GetUserId()
+    setUserId(id)
+  }, [])
+
+  
+  const { data: moviesData, loading: moviesLoading, error: moviesError } =
+    useGraphQLQuery(GET_MOVIES_PAGED, {
+      variables: { page, pageSize },
+      fetchPolicy: 'cache-and-network',
+    })
+
+  
+  useEffect(() => {
+    if (moviesData?.moviesPaged) setMovies(moviesData.moviesPaged)
+    else if (!moviesLoading) setMovies([])
+  }, [moviesData, moviesLoading])
 
   function nextPage() {
     if (movies.length === pageSize) setPage(p => p + 1)
@@ -42,11 +58,7 @@ function MoviesPage() {
     setPage(p => Math.max(1, p - 1))
   }
 
-  useEffect(() => {
-    const id = utils.GetUserId()
-    setUserId(id)
-  }, [])
-
+  
   useEffect(() => {
     const ac = new AbortController()
     setIsPersonalLoading(true)
@@ -75,9 +87,10 @@ function MoviesPage() {
     })()
 
     return () => ac.abort()
-  }, [userId])
+  }, [userId, API_BASE])
 
-  const showRecommended = userId !== null && userId !== -1 && personalMovies.length > 0
+  const showRecommended =
+    userId !== null && userId !== -1 && personalMovies.length > 0
 
   return (
     <>
@@ -107,6 +120,13 @@ function MoviesPage() {
 
       <div className="wrapper">
         <h1 className={styles.movies_header}>Movies</h1>
+
+        {moviesError && (
+          <div className="alert alert-danger">
+            Error loading movies: {moviesError.message}
+          </div>
+        )}
+
         <div className={styles.movies_wrapper}>
           <div>
             <MoviesContainer previousPage={previousPage} nextPage={nextPage}>
@@ -119,7 +139,13 @@ function MoviesPage() {
                 />
               ))}
             </MoviesContainer>
+
+            {moviesLoading && (
+              <div className="text-center my-3">Loading movies...</div>
+            )}
           </div>
+
+          
           <MoviesFilter setMovies={setMovies} />
         </div>
       </div>

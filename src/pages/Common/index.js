@@ -4,4 +4,4 @@ export { default as MoviePage } from './MoviePage/MoviePage'
 export { default as SignInPage } from './SignInPage/SignInPage'
 export { default as SignUpPage } from './SignUpPage/SignUpPage'
 export { default as BookingPage } from './BookingPage/BookingPage'
-export { default as GraphQLMoviesPage } from '../GraphQLMoviesPage'
+
