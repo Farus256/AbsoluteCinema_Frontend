@@ -12,11 +12,11 @@ function Header() {
     console.log(utils.GetUserRoles());
 
     return (
-        <nav class={`navbar navbar-dark ${styles.container}`}>
-            <div class="container-fluid">
+        <nav className={`navbar navbar-dark ${styles.container}`}>
+            <div className="container-fluid">
                 <div>
-                    <Link to="/" class="navbar-brand"> <b>AbsoluteCinema</b></Link>
-                    <Link to="/movies" class="navbar-brand">Movies</Link>
+                    <Link to="/" className="navbar-brand"> <b>AbsoluteCinema</b></Link>
+                    <Link to="/movies" className="navbar-brand">Movies</Link>
                     {
                     isAdmin && (
                         <Link to={"/admindashboard"} className="navbar-brand">AdminDashboard</Link>

@@ -43,7 +43,7 @@ export class MovieReply extends Message {
 export const MovieGrpc = {
   typeName: "movies.MovieGrpc",
   methods: {
-    getMovieById: {
+    GetMovieById: {
       name: "GetMovieById",
       I: GetMovieRequest,
       O: MovieReply,

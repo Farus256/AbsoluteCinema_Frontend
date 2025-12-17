@@ -30,7 +30,6 @@ function MoviePage() {
                     posterPath: response.posterPath,
                     language: response.language,
                     releaseDate: response.releaseDate,
-                    trailerPath: null, // gRPC-відповідь наразі не містить трейлера
                 }
                 setSelectedMovie(mappedMovie)
                 sessionStorage.setItem("movieTitle", mappedMovie.title)
@@ -38,6 +37,21 @@ function MoviePage() {
             } catch (err) {
                 console.error('gRPC movie fetch failed, fallback to REST', err)
                 return false
+            }
+        }
+
+        const loadTrailerViaRest = async () => {
+            try {
+                const res = await fetch(`${APP_CONFIG.API_URL}/Movie/GetMovieById?id=${id}`)
+                const data = await res.json()
+                if (ignore) return
+                // Update only the trailerPath field
+                setSelectedMovie(prev => ({
+                    ...prev,
+                    trailerPath: data.trailerPath
+                }))
+            } catch (err) {
+                if (!ignore) console.error('Failed to fetch trailer via REST:', err)
             }
         }
 
@@ -55,7 +69,11 @@ function MoviePage() {
 
         ;(async () => {
             const ok = await loadViaGrpc()
-            if (!ok) {
+            if (ok) {
+                // If gRPC succeeded, fetch trailer separately via REST
+                await loadTrailerViaRest()
+            } else {
+                // If gRPC failed, fallback to full REST
                 await loadViaRest()
             }
         })()

@@ -10,6 +10,10 @@ const commonRoute = [
         element: <commonPages.MoviesPage />
     },
     {
+        path: '/graphql-movies',
+        element: <commonPages.GraphQLMoviesPage />
+    },
+    {
         path: '/movie/:id/booking',
         element: <commonPages.BookingPage />
     },
